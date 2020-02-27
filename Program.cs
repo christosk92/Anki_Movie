@@ -72,7 +72,7 @@ namespace AnkiMovie_Console_Test {
                     {
                         FFmpegHelper.init(AnkiMovieData);
                         string extracted = await FFmpegHelper.ExtractAudio(videoPath, Path.Combine(AnkiMovieData, "extracted.mp3"));
-                        string trimmed = await FFmpegHelper.ExtractAudio(extracted, Path.Combine(AnkiMovieData, "trimmed.mp3"));
+                        string trimmed = await FFmpegHelper.Trim(extracted, Path.Combine(AnkiMovieData, "trimmed.mp3"), TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(2));
                     }
                     catch (Xabe.FFmpeg.Exceptions.FFmpegNotFoundException)
                     { throw new Exception("FFMpeg was not found. Expected output: " + AnkiMovieData); }
