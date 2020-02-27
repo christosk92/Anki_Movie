@@ -36,28 +36,38 @@ namespace AnkiMovie_Console_Test {
                 action = "deckNames",
                 version = 6
             };
-
             var result = await httpClient.PostAsync(AnkiBaseUrl, new StringContent(JsonConvert.SerializeObject(action), Encoding.UTF8, "application/json"));
-
             var response = await result.Content.ReadAsStringAsync();
             JObject obj = JObject.Parse(response);
             var jarr = obj["result"].Value<JArray>();
             List<String> lst = jarr.ToObject<List<String>>();
             lst.Sort();
-
             return lst;
         }
 
-        public static async void AddToDeck(string deck, models.Note note) {
+        public static String AddToDeck(models.Note note) {
             models.Action action = new models.Action {
                 action = "addNote",
                 version = 6,
-                _params = {
+                _params = new models.Params {
                     _notes = note
                 }
             };
-
-            await httpClient.PostAsync(AnkiBaseUrl, new StringContent(JsonConvert.SerializeObject(action), Encoding.UTF8, "application/json"));
+            var result = httpClient.PostAsync(AnkiBaseUrl, new StringContent(JsonConvert.SerializeObject(action), Encoding.UTF8, "application/json")).Result;
+            var contentResult = result.Content.ReadAsStringAsync().Result;
+            //duplicate
+            var errorContent = JObject.Parse(contentResult)["error"].Value<String>();
+            if (!String.IsNullOrEmpty(errorContent))
+            {
+                if(!errorContent.Contains("deck"))
+                    return errorContent;
+                else
+                {
+                    CreateDeck(note.DeckName);
+                    AddToDeck(note);
+                }
+            }
+            return "Created card";
         }
     }
 }

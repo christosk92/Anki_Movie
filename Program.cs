@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AnkiMovie_Console_Test.models;
+using Newtonsoft.Json;
 using SubtitlesParser.Classes;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,16 @@ namespace AnkiMovie_Console_Test {
             if (result) {
                 Console.WriteLine("Anki-senpai noticed me!");
                 AnkiHelpers.init();
-                await AnkiHelpers.GetDecks();
+                var note = new Note
+                {
+                    DeckName = "Test Anki Movie",
+                    ModelName = "Basic",
+                    options = new Options { allowDuplicate = true},
+                    Tags = new List<String>{ "AnkiMovie" },
+                    Fields = new Fields { Back = "Test1", Front = "Test1" }
+                };
+                var resultAdd = AnkiHelpers.AddToDeck(note);
+                Console.WriteLine(resultAdd);
             }
             else
                 Console.WriteLine("Anki-senpai didn't notice me...");

@@ -42,8 +42,15 @@ namespace AnkiMovie_Console_Test.models
 
         [JsonProperty("audio", NullValueHandling = NullValueHandling.Ignore)]
         public Audio Audio { get; set; }
-    }
 
+        [JsonProperty("options", NullValueHandling = NullValueHandling.Ignore)]
+        public Options options { get; set; }
+    }
+    public partial class Options
+    {
+        [JsonProperty("allowDuplicate", NullValueHandling = NullValueHandling.Ignore)]
+        public bool allowDuplicate { get; set; }
+    }
     public partial class Audio
     {
         [JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
