@@ -30,7 +30,7 @@ namespace AnkiMovie_Console_Test
             Console.WriteLine("Trimming audio from: " + input);
             if (System.IO.File.Exists(output))
                 System.IO.File.Delete(output);
-            var action = Conversion.Split(output, output, from, to);
+            var action = Conversion.Split(input, output, from, to);
             action.OnProgress += (sender, args) =>
             {
                 var percent = (int)(Math.Round(args.Duration.TotalSeconds / args.TotalLength.TotalSeconds, 2) * 100);
